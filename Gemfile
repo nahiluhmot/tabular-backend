@@ -9,6 +9,7 @@ gem 'unicorn'
 gem 'mysql2'
 
 group :development, :test do
+  gem 'annotate'
   gem 'rspec'
   gem 'rubocop'
   gem 'rack-test'
