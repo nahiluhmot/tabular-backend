@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411200858) do
+ActiveRecord::Schema.define(version: 20150411210651) do
+
+  create_table "sessions", force: :cascade do |t|
+    t.string   "key",        limit: 255, null: false
+    t.integer  "user_id",    limit: 4,   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["key"], name: "index_sessions_on_key", unique: true, using: :btree
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username",      limit: 255, null: false
@@ -23,4 +33,5 @@ ActiveRecord::Schema.define(version: 20150411200858) do
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "sessions", "users"
 end
