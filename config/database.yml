@@ -1,0 +1,20 @@
+common: &common
+  adapter: mysql2
+  reconnect: true
+  encoding: utf8
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *common
+  database: tabular_dev
+  username: tabular_dev
+  password: tabular_dev
+  host: localhost
+
+test:
+  <<: *common
+  database: tabular_test
+  username: tabular_test
+  password: tabular_test
+  host: localhost
