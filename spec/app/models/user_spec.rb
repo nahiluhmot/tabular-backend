@@ -1,0 +1,53 @@
+require 'spec_helper'
+
+describe Tabular::Models::User do
+  describe '#valid?' do
+    subject do
+      described_class.new(
+        username: username,
+        password_hash: password_hash,
+        password_salt: password_salt
+      )
+    end
+    let(:username) { 'tom_hulihan1' }
+    let(:password_hash) { 'HASH' }
+    let(:password_salt) { 'SALT' }
+
+    context 'when the username is invalid' do
+      let(:usernames) { [nil, '', 'howdy!']  }
+
+      it 'is not valid' do
+        expect(usernames).to be_none do |username|
+          subject.username = username
+          subject.valid?
+        end
+      end
+    end
+
+    context 'when the username is valid' do
+      context 'but the password_hash is invalid' do
+        let(:password_hash) { nil }
+
+        it 'is not valid' do
+          expect(subject).to_not be_valid
+        end
+      end
+
+      context 'and the password_hash is valid' do
+        context 'but the password_salt is invalid' do
+          let(:password_salt) { nil }
+
+          it 'is not valid' do
+            expect(subject).to_not be_valid
+          end
+        end
+
+        context 'and the password_salt is valid' do
+          it 'is valid' do
+            expect(subject).to be_valid
+          end
+        end
+      end
+    end
+  end
+end
