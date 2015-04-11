@@ -50,4 +50,25 @@ describe Tabular::Models::User do
       end
     end
   end
+
+  describe '#sessions' do
+    subject { create(:user) }
+    let(:session_one) { build(:session, user: subject) }
+    let(:session_two) { build(:session, user: subject) }
+    let(:sessions) { [session_one, session_two] }
+
+    before { sessions.each(&:save!) }
+
+    it 'returns the users sessions' do
+      expect(subject.sessions).to eq(sessions)
+    end
+
+    context 'when the user is destroyed' do
+      it 'destroyes the sessions as well' do
+        user_id = subject.id
+        subject.destroy!
+        expect(Tabular::Models::Session.exists?(user_id: user_id)).to be false
+      end
+    end
+  end
 end

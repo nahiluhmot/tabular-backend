@@ -16,6 +16,8 @@ module Tabular
     class User < ActiveRecord::Base
       self.table_name = 'users'
 
+      has_many :sessions, dependent: :destroy
+
       validates :username,
         presence: true,
         uniqueness: true,
