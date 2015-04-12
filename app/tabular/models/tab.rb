@@ -23,16 +23,20 @@ module Tabular
       belongs_to :user
 
       validates :body,
-        presence: true
+        presence: true,
+        length: { minimum: 1 }
 
       validates :artist,
-        presence: true
+        presence: true,
+        length: { minimum: 1 }
 
       validates :album,
-        presence: true
+        presence: true,
+        length: { minimum: 1 }
 
       validates :title,
-        presence: true
+        presence: true,
+        length: { minimum: 1 }
 
       validates :user_id,
         presence: true
