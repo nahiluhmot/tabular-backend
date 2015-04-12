@@ -17,6 +17,7 @@ module Tabular
       self.table_name = 'users'
 
       has_many :sessions, dependent: :destroy
+      has_many :tabs, dependent: :destroy
 
       validates :username,
         presence: true,

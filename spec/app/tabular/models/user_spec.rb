@@ -71,4 +71,25 @@ describe Tabular::Models::User do
       end
     end
   end
+
+  describe '#tabs' do
+    subject { create(:user) }
+    let(:tab_one) { build(:tab, user: subject) }
+    let(:tab_two) { build(:tab, user: subject) }
+    let(:tabs) { [tab_one, tab_two] }
+
+    before { tabs.each(&:save!) }
+
+    it 'returns the users tabs' do
+      expect(subject.tabs).to eq(tabs)
+    end
+
+    context 'when the user is destroyed' do
+      it 'destroyes the tabs as well' do
+        user_id = subject.id
+        subject.destroy!
+        expect(Tabular::Models::Tab.exists?(user_id: user_id)).to be false
+      end
+    end
+  end
 end
