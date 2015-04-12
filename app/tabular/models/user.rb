@@ -4,7 +4,7 @@
 #
 #  id            :integer          not null, primary key
 #  username      :string(255)      not null
-#  password_hash :string(255)      not null
+#  password_hash :text(65535)      not null
 #  password_salt :string(255)      not null
 #  created_at    :datetime
 #  updated_at    :datetime

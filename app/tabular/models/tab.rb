@@ -3,7 +3,7 @@
 # Table name: tabs
 #
 #  id         :integer          not null, primary key
-#  body       :string(255)      not null
+#  body       :text(65535)      not null
 #  artist     :string(255)      not null
 #  album      :string(255)      not null
 #  title      :string(255)      not null
