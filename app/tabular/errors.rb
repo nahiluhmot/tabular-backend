@@ -12,6 +12,9 @@ module Tabular
     # invalid.
     InvalidModel = Class.new(BaseError)
 
+    # Raised when a model cannot be found.
+    NoSuchModel = Class.new(BaseError)
+
     # Raised when a password does not match its password confirmation (typcially
     # when creating a user or updating a password).
     PasswordsDoNotMatch = Class.new(BaseError)
