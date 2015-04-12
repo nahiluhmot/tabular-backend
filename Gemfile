@@ -7,6 +7,7 @@ gem 'sinatra', git: 'https://github.com/sinatra/sinatra'
 gem 'sinatra-activerecord'
 gem 'unicorn'
 gem 'mysql2'
+gem 'scrypt'
 
 group :development, :test do
   gem 'annotate'
