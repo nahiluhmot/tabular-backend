@@ -8,6 +8,10 @@ module Tabular
     # Raised when a user tries to login with the wrong password.
     BadPassword = Class.new(BaseError)
 
+    # Raised when a model cannot be created/updated because the new data is
+    # invalid.
+    InvalidModel = Class.new(BaseError)
+
     # Raised when a password does not match its password confirmation (typcially
     # when creating a user or updating a password).
     PasswordsDoNotMatch = Class.new(BaseError)

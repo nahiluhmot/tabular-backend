@@ -3,5 +3,6 @@ module Tabular
   # layer contains the lop level business logic for the application.
   module Services
     autoload :Passwords, 'tabular/services/passwords'
+    autoload :Users, 'tabular/services/users'
   end
 end
