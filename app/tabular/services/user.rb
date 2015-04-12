@@ -17,9 +17,7 @@ module Tabular
 
       # Update the user's password.
       def update_password!(password, confirmation)
-        Passwords.validate_new_password!(password, confirmation)
-        salt = Passwords.generate_salt
-        hash = Passwords.hash_password(password, salt)
+        salt, hash = Passwords.validate_new_password!(password, confirmation)
         model.update!(password_salt: salt, password_hash: hash)
       rescue => ex
         raise Errors::InvalidModel, ex

@@ -45,8 +45,14 @@ describe Tabular::Services::Passwords do
       end
 
       context 'and the passord is long enough' do
-        it 'does nothing' do
-          expect { subject.validate_new_password!(password, confirmation) }
+        let(:salt_and_hash) do
+          subject.validate_new_password!(password, confirmation)
+        end
+        let(:salt) { salt_and_hash[0] }
+        let(:hash) { salt_and_hash[1] }
+
+        it 'returns a new salt and hash' do
+          expect { subject.authenticate!(password, salt, hash) }
             .to_not raise_error
         end
       end

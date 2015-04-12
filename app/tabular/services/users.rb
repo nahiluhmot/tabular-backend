@@ -6,13 +6,12 @@ module Tabular
       module_function
 
       # Create a new user.
-      def create(username, password, password_confirmation)
-        Passwords.validate_new_password!(password, password_confirmation)
-        salt = Passwords.generate_salt
+      def create(username, password, confirmation)
+        salt, hash = Passwords.validate_new_password!(password, confirmation)
         Models::User.create!(
           username: username,
           password_salt: salt,
-          password_hash: Passwords.hash_password(password, salt)
+          password_hash: hash
         )
       rescue => ex
         raise Errors::InvalidModel, ex
