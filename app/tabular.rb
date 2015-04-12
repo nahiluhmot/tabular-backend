@@ -4,4 +4,5 @@ Bundler.require(:default, ENV['RACK_ENV'].to_sym)
 module Tabular
   autoload :Controllers, 'tabular/controllers'
   autoload :Models, 'tabular/models'
+  autoload :Queries, 'tabular/queries'
 end
