@@ -10,12 +10,12 @@ module Tabular
 
       error do |err|
         case err
-        when Errors::InvalidModel, Errors::PasswordTooShort,
-             Errors::MalformedRequest, Errors::PasswordsDoNotMatch
+        when Errors::InvalidModel, Errors::MalformedRequest,
+             Errors::PasswordTooShort, Errors::PasswordsDoNotMatch
           status 400
-        when Errors::BadPassword
-          status 401
         when Errors::Unauthorized
+          status 401
+        when Errors::BadPassword
           status 403
         when Errors::NoSuchModel
           status 404
@@ -27,7 +27,7 @@ module Tabular
       end
 
       def session_key
-        request.headers[SESSION_KEY_HEADER]
+        request.env["HTTP_#{SESSION_KEY_HEADER}"]
       end
 
       def request_body
