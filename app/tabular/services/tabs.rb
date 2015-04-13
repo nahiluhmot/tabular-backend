@@ -6,13 +6,24 @@ module Tabular
         SELECT * FROM tabs
         WHERE MATCH (artist,album,title)
         AGAINST (:search_params in NATURAL LANGUAGE MODE)
+        LIMIT :limit
+        OFFSET :offset
       EOS
 
       module_function
 
       # Perform a natural language search against the tabs table.
-      def search_tabs(search_params)
-        Models::Tab.find_by_sql([SEARCH_QUERY, search_params: search_params])
+      def search_tabs(search_params, opts = { limit: 25, page: 1 })
+        limit, page = opts.values_at(:limit, :page)
+        fail Errors::MalformedRequest unless limit.is_a?(Integer) && (limit > 0)
+        fail Errors::MalformedRequest unless page.is_a?(Integer) && (page > 0)
+
+        Models::Tab.find_by_sql([
+          SEARCH_QUERY,
+          search_params: search_params,
+          limit: limit,
+          offset: (page - 1) * limit
+        ])
       end
 
       def create_tab!(session_key, artist, album, title, body)
