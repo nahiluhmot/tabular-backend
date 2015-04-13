@@ -9,7 +9,7 @@ module Tabular
       def create_user!(username, password, confirmation)
         fail Errors::Conflict if Models::User.exists?(username: username)
 
-        salt, hash = Passwords.validate_new_password!(password, confirmation)
+        salt, hash = Crypto.validate_new_password!(password, confirmation)
         Models::User.create!(
           username: username,
           password_salt: salt,
@@ -22,7 +22,7 @@ module Tabular
       # Update the user's password.
       def update_password!(session_key, password, confirmation)
         user = user_for_session!(session_key)
-        salt, hash = Passwords.validate_new_password!(password, confirmation)
+        salt, hash = Crypto.validate_new_password!(password, confirmation)
         user.update!(password_salt: salt, password_hash: hash)
         Models::Session.destroy_all(user_id: user.id)
         user.tap(&:reload)

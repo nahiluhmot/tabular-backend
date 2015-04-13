@@ -9,7 +9,7 @@ module Tabular
         user = Models::User.find_by(username: username)
         fail Errors::NoSuchModel unless user
         id, salt, hash = user.id, user.password_salt, user.password_hash
-        Passwords.authenticate!(password, salt, hash)
+        Crypto.authenticate!(password, salt, hash)
         Models::Session.create!(key: unique_session_keys.next, user_id: id)
       end
 
@@ -23,7 +23,7 @@ module Tabular
       def unique_session_keys
         @unique_keys ||= Enumerator.new do |keys|
           loop do
-            key = Passwords.generate_salt
+            key = Crypto.generate_salt
             keys << key unless Models::Session.exists?(key: key)
           end
         end

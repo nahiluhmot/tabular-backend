@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Services::Passwords do
+describe Tabular::Services::Crypto do
   describe '.generate_salt' do
     let(:salt) { subject.generate_salt }
 

@@ -1,7 +1,7 @@
 module Tabular
   module Services
     # This service is used to salt, hash, and verify passwords.
-    module Passwords
+    module Crypto
       # Minimum length for passwords
       MINIMUM_PASSWORD_SIZE = 8.freeze
 

@@ -49,7 +49,7 @@ describe Tabular::Services::Users do
         expect(user).to be_a(Tabular::Models::User)
         expect(user.username).to eq(username)
 
-        Tabular::Services::Passwords.authenticate!(
+        Tabular::Services::Crypto.authenticate!(
           password,
           user.password_salt,
           user.password_hash
