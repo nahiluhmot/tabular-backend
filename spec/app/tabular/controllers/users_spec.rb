@@ -72,4 +72,80 @@ describe Tabular::Controllers::Users do
       end
     end
   end
+
+  describe 'PUT /users/' do
+    let(:put_body) { options.to_json }
+    let(:options) do
+      {
+        password: password,
+        password_confirmation: confirmation
+      }
+    end
+    let(:password) { 'trustno1' }
+    let(:confirmation) { password }
+
+    context 'when nobody is logged in' do
+      it 'returns a 401' do
+        put '/users/', put_body
+
+        expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when a user is logged in' do
+      let(:user) { create(:user) }
+      let(:session) { create(:session, user: user) }
+
+      before { header Tabular::Controllers::SESSION_KEY_HEADER, session.key }
+
+      context 'but the password cannot be updated' do
+        let(:confirmation) { 'bad confirmation' }
+
+        it 'returns a 400' do
+          put '/users/', put_body
+
+          expect(last_response.status).to eq(400)
+        end
+      end
+
+      context 'and the password can be updated' do
+        let(:session_key) { rack_mock_session.cookie_jar['session_key'] }
+
+        it 'returns a 204, updates the password, and logs them in' do
+          put '/users/', put_body
+
+          expect(last_response.status).to eq(204)
+          expect { Tabular::Services::Sessions.login!(user.username, password) }
+            .to_not raise_error
+          expect(Tabular::Services::Users.user_for_session!(session_key))
+            .to eq(user)
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /users/' do
+    context 'when nobody is logged in' do
+      it 'returns a 401' do
+        expect { delete '/users/' }
+          .to_not change { Tabular::Models::User.count }
+
+        expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when a user is logged in' do
+      let(:user) { create(:user) }
+      let(:session) { create(:session, user: user) }
+
+      before { header Tabular::Controllers::SESSION_KEY_HEADER, session.key }
+
+      it 'returns a 204 and deletes the user' do
+        expect { delete '/users/' }
+          .to change { Tabular::Models::User.exists?(id: user.id) }
+          .from(true)
+          .to(false)
+      end
+    end
+  end
 end

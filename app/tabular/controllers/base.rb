@@ -32,8 +32,9 @@ module Tabular
         request.env["HTTP_#{SESSION_KEY_HEADER}"]
       end
 
-      def request_body
-        JSON.parse(request.body.tap(&:rewind).read).symbolize_keys
+      def request_body(*keys)
+        body = JSON.parse(request.body.tap(&:rewind).read).symbolize_keys
+        keys.empty? ? body : body.values_at(*keys)
       rescue JSON::JSONError => ex
         raise Errors::MalformedRequest, ex
       end

@@ -5,7 +5,7 @@ module Tabular
       # Create a session by authenticating a user via username and password.
       post '/sessions/?' do
         status 201
-        session = login!(*request_body.values_at(*%i(username password)))
+        session = login!(*request_body(:username, :password))
 
         response.set_cookie :session_key,
           value: session.key,
