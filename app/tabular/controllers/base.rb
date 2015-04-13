@@ -3,6 +3,8 @@ module Tabular
     # This controller doesn't expose any routes, but is used as a base for the
     # rest of the application's controllers.
     class Base < Sinatra::Base
+      helpers { include Services::Base }
+
       set :raise_errors, false
       set :show_exceptions, false
 

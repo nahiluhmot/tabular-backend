@@ -2,8 +2,6 @@ module Tabular
   module Controllers
     # This controller handles requests dealing with collections of users.
     class Users < Base
-      helpers { include Services::Users }
-
       # Create a new user and log them in.
       post '/users/?' do
         status 201
