@@ -1,7 +1,6 @@
 module Tabular
   module Services
-    # This service is used to perform operations on collections of users, such
-    # as creating a user (which is viewed as adding one to the collection).
+    # This service is used to salt, hash, and verify passwords.
     module Passwords
       # Minimum length for passwords
       MINIMUM_PASSWORD_SIZE = 8.freeze

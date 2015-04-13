@@ -1,7 +1,6 @@
 module Tabular
   module Services
-    # This service is used to perform operations on collections of sessions.
-    # The sessions are always related by a user.
+    # This service is used to login and logout.
     module Sessions
       module_function
 

@@ -1,7 +1,7 @@
 module Tabular
   module Services
-    # This service is used to perform operations on collections of users, such
-    # as creating a user (which is viewed as adding one to the collection).
+    # This service, whose methods mostly require a session token, contains the
+    # functionality to create, update, and destroy users.
     module Users
       module_function
 
