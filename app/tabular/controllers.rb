@@ -5,6 +5,7 @@ module Tabular
 
     autoload :Base, 'tabular/controllers/base'
     autoload :Sessions, 'tabular/controllers/sessions'
+    autoload :Tabs, 'tabular/controllers/tabs'
     autoload :Users, 'tabular/controllers/users'
   end
 end

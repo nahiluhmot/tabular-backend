@@ -14,7 +14,7 @@ module Tabular
 
       # Perform a natural language search against the tabs table.
       def search_tabs(search_params, opts = { limit: 25, page: 1 })
-        limit, page = opts.values_at(:limit, :page)
+        limit, page = opts.values_at(:limit, :page).map(&:to_i)
         fail Errors::MalformedRequest unless limit.is_a?(Integer) && (limit > 0)
         fail Errors::MalformedRequest unless page.is_a?(Integer) && (page > 0)
 
@@ -35,6 +35,8 @@ module Tabular
           body: body,
           user_id: user.id
         )
+      rescue ActiveRecord::RecordInvalid => ex
+        raise Errors::InvalidModel, ex
       end
 
       def update_tab!(session_key, id, options)
@@ -43,6 +45,12 @@ module Tabular
 
       def destroy_tab!(session_key, id)
         find_tab_by_id_and_session_key!(id, session_key).destroy!
+      end
+
+      def find_tab_by_id!(id)
+        Models::Tab.find_by(id: id).tap do |tab|
+          fail Errors::NoSuchModel unless tab
+        end
       end
 
       def find_tab_by_id_and_session_key!(id, session_key)
