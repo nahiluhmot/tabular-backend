@@ -74,7 +74,7 @@ describe Tabular::Controllers::Sessions do
       let(:session) { create(:session, user: user) }
       let(:key) { session.key }
 
-      it 'logs them out', :cur do
+      it 'logs them out' do
         header Tabular::Controllers::SESSION_KEY_HEADER, key
         delete '/sessions/'
         expect(last_response.status).to eq(204)
