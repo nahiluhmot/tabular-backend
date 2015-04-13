@@ -4,6 +4,7 @@ module Tabular
   module Services
     autoload :Passwords, 'tabular/services/passwords'
     autoload :Sessions, 'tabular/services/sessions'
+    autoload :Tabs, 'tabular/services/tabs'
     autoload :Users, 'tabular/services/users'
   end
 end
