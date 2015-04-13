@@ -1,6 +1,8 @@
 namespace :build do
   desc 'Run the app specs'
-  RSpec::Core::RakeTask.new(:spec)
+  RSpec::Core::RakeTask.new(:spec) do |spec|
+    spec.rspec_opts = ENV['RSPEC_OPTS'] if ENV['RSPEC_OPTS']
+  end
 
   desc 'Run the quality metrics'
   RuboCop::RakeTask.new(:quality) do |cop|
