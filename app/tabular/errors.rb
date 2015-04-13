@@ -8,6 +8,9 @@ module Tabular
     # Raised when a user tries to login with the wrong password.
     BadPassword = Class.new(BaseError)
 
+    # Raised when a conflict is attempted to be created.
+    Conflict = Class.new(BaseError)
+
     # Raised when a model cannot be created/updated because the new data is
     # invalid.
     InvalidModel = Class.new(BaseError)

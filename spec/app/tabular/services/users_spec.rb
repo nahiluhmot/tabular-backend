@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Tabular::Services::Users do
-  describe '.create_user' do
+  describe '.create_user!' do
     let(:username) { 'nahiluhmot' }
     let(:password) { 'trustno1' }
     let(:confirmation) { password }
@@ -9,18 +9,18 @@ describe Tabular::Services::Users do
     context 'when the password does not match its confirmation' do
       let(:confirmation) { 'itrustno1' }
 
-      it 'fails with InvalidModel' do
-        expect { subject.create_user(username, password, confirmation) }
-          .to raise_error(Tabular::Errors::InvalidModel)
+      it 'fails with PasswordsDoNotMatch' do
+        expect { subject.create_user!(username, password, confirmation) }
+          .to raise_error(Tabular::Errors::PasswordsDoNotMatch)
       end
     end
 
     context 'when the password is too short' do
       let(:password) { 'letmein' }
 
-      it 'fails with InvalidModel' do
-        expect { subject.create_user(username, password, confirmation) }
-          .to raise_error(Tabular::Errors::InvalidModel)
+      it 'fails with PasswordTooShort' do
+        expect { subject.create_user!(username, password, confirmation) }
+          .to raise_error(Tabular::Errors::PasswordTooShort)
       end
     end
 
@@ -28,22 +28,22 @@ describe Tabular::Services::Users do
       let(:username) { '' }
 
       it 'fails with InvalidModel' do
-        expect { subject.create_user(username, password, confirmation) }
+        expect { subject.create_user!(username, password, confirmation) }
           .to raise_error(Tabular::Errors::InvalidModel)
       end
     end
 
     context 'when the username is already taken' do
-      before { subject.create_user(username, password, confirmation) }
+      before { subject.create_user!(username, password, confirmation) }
 
       it 'fails with InvalidModel' do
-        expect { subject.create_user(username, password, confirmation) }
-          .to raise_error(Tabular::Errors::InvalidModel)
+        expect { subject.create_user!(username, password, confirmation) }
+          .to raise_error(Tabular::Errors::Conflict)
       end
     end
 
     context 'when the username, password, and confirmation are valid' do
-      let(:user) { subject.create_user(username, password, confirmation)  }
+      let(:user) { subject.create_user!(username, password, confirmation)  }
 
       it 'creates a new user' do
         expect(user).to be_a(Tabular::Models::User)
