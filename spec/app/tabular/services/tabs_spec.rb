@@ -80,6 +80,14 @@ describe Tabular::Services::Tabs do
 
     let(:key) { session.key }
     let(:id) { tab.id }
+    let(:options) do
+      {
+        artist: artist,
+        album: album,
+        title: title,
+        body: body
+      }
+    end
     let(:artist) { 'Radiohead' }
     let(:album) { 'Pablo Honey' }
     let(:title) { 'Creep' }
@@ -89,7 +97,7 @@ describe Tabular::Services::Tabs do
       let(:key) { 'bad key' }
 
       it 'fails with Unauthorized' do
-        expect { subject.update_tab!(key, id, artist, album, title, body) }
+        expect { subject.update_tab!(key, id, options) }
           .to raise_error(Tabular::Errors::Unauthorized)
       end
     end
@@ -99,7 +107,7 @@ describe Tabular::Services::Tabs do
         let(:id) { -1 }
 
         it 'fails with NoSuchModel' do
-          expect { subject.update_tab!(key, id, artist, album, title, body) }
+          expect { subject.update_tab!(key, id, options) }
             .to raise_error(Tabular::Errors::NoSuchModel)
         end
       end
@@ -109,14 +117,14 @@ describe Tabular::Services::Tabs do
           let(:tab) { create(:tab) }
 
           it 'fails with NoSuchModel' do
-            expect { subject.update_tab!(key, id, artist, album, title, body) }
+            expect { subject.update_tab!(key, id, options) }
               .to raise_error(Tabular::Errors::NoSuchModel)
           end
         end
 
         context 'and it belongs to the logged in user' do
           it 'updates the tab' do
-            expect { subject.update_tab!(key, id, artist, album, title, body) }
+            expect { subject.update_tab!(key, id, options) }
               .to change { tab.tap(&:reload).artist }
           end
         end

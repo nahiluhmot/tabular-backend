@@ -37,18 +37,19 @@ module Tabular
         )
       end
 
-      def update_tab!(session_key, id, artist, album, title, body)
-        user = Users.user_for_session!(session_key)
-        tab = Models::Tab.find_by(id: id, user_id: user.id)
-        fail Errors::NoSuchModel unless tab
-        tab.update!(artist: artist, album: album, title: title, body: body)
+      def update_tab!(session_key, id, options)
+        find_tab_by_id_and_session_key!(id, session_key).update!(options)
       end
 
       def destroy_tab!(session_key, id)
+        find_tab_by_id_and_session_key!(id, session_key).destroy!
+      end
+
+      def find_tab_by_id_and_session_key!(id, session_key)
         user = Users.user_for_session!(session_key)
-        tab = Models::Tab.find_by(id: id, user_id: user.id)
-        fail Errors::NoSuchModel unless tab
-        tab.destroy!
+        Models::Tab.find_by(id: id, user_id: user.id).tap do |tab|
+          fail Errors::NoSuchModel unless tab
+        end
       end
     end
   end
