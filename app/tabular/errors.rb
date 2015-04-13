@@ -15,6 +15,9 @@ module Tabular
     # invalid.
     InvalidModel = Class.new(BaseError)
 
+    # Raised when a request cannot be parsed.
+    MalformedRequest = Class.new(BaseError)
+
     # Raised when a model cannot be found.
     NoSuchModel = Class.new(BaseError)
 

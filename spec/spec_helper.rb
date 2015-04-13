@@ -10,6 +10,7 @@ Dir['spec/factories/**/*.rb'].each(&method(:load))
 
 RSpec.configure do |config|
   config.include(FactoryGirl::Syntax::Methods)
+  config.include(Rack::Test::Methods)
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation
