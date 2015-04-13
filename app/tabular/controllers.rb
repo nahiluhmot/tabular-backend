@@ -4,5 +4,6 @@ module Tabular
     SESSION_KEY_HEADER = 'X-TABULAR-SESSION-KEY'.freeze
 
     autoload :Base, 'tabular/controllers/base'
+    autoload :Users, 'tabular/controllers/users'
   end
 end
