@@ -16,4 +16,5 @@ group :development, :test do
   gem 'rack-test'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'simplecov', require: false
 end

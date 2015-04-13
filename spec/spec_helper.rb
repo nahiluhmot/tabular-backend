@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 ENV['RACK_ENV'] ||= 'test'
 
 $LOAD_PATH << File.expand_path('app', '.')
