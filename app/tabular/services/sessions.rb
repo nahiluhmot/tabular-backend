@@ -2,28 +2,23 @@ module Tabular
   module Services
     # This service is used to perform operations on collections of sessions.
     # The sessions are always related by a user.
-    class Sessions
-      attr_reader :user
+    module Sessions
+      module_function
 
-      def initialize(user)
-        @user = user
+      # If the given credentials are valid, create a session.
+      def login!(user, password)
+        id, salt, hash = user.id, user.password_salt, user.password_hash
+        Passwords.authenticate!(password, salt, hash)
+        Models::Session.create!(key: unique_session_keys.next, user_id: id)
       end
 
-      def create!
-        Models::Session.create!(key: unique_keys.next, user_id: user.id)
+      # Destroy all the sessions with the given key.
+      def logout!(key)
+        Models::Session.destroy_all(key: key)
       end
 
-      def read
-        Models::Session.where(user_id: user.id).to_a
-      end
-
-      def destroy!
-        Models::Session.destroy_all(user_id: user.id)
-      end
-
-      private
-
-      def unique_keys
+      # An Enumerator which yields session keys.
+      def unique_session_keys
         @unique_keys ||= Enumerator.new do |keys|
           loop do
             key = Passwords.generate_salt

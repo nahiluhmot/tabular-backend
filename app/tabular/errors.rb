@@ -21,5 +21,8 @@ module Tabular
 
     # Raised when the a new password is too short
     PasswordTooShort = Class.new(BaseError)
+
+    # Raised when the user is unauthorized to perform an action.
+    Unauthorized = Class.new(BaseError)
   end
 end
