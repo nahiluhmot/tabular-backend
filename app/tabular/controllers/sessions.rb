@@ -1,6 +1,7 @@
 module Tabular
   module Controllers
-    # This controller handles requests dealing with collections of users.
+    # This controller handles requests dealing with sessions, like logging in
+    # and out.
     class Sessions < Base
       # Create a session by authenticating a user via username and password.
       post '/sessions/?' do

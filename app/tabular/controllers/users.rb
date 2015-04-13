@@ -1,6 +1,6 @@
 module Tabular
   module Controllers
-    # This controller handles requests dealing with collections of users.
+    # This controller handles requests dealing with users.
     class Users < Base
       # Create a new user and log them in.
       post '/users/?' do
