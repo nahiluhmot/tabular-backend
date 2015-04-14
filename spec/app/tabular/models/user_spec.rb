@@ -93,6 +93,26 @@ describe Tabular::Models::User do
     end
   end
 
+  describe '#comments' do
+    subject { create(:user) }
+    let(:comment) { build(:comment, user: subject) }
+
+    before { comment.save! }
+
+    it 'returns the user\'s comments' do
+      expect(subject.comments).to eq([comment])
+    end
+
+    context 'when the user is destroyed' do
+      it 'destroys the comments as well' do
+        expect { subject.destroy! }
+          .to change { Tabular::Models::Comment.where(user: subject).count }
+          .from(1)
+          .to(0)
+      end
+    end
+  end
+
   describe '#follower_relationships' do
     subject { create(:user) }
     let(:relationship) { build(:relationship, follower: subject) }

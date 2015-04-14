@@ -1,6 +1,7 @@
 module Tabular
   # This module is used as a namespace for the models.
   module Models
+    autoload :Comment, 'tabular/models/comment'
     autoload :Relationship, 'tabular/models/relationship'
     autoload :Session, 'tabular/models/session'
     autoload :Tab, 'tabular/models/tab'

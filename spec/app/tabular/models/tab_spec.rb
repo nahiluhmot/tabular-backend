@@ -38,8 +38,22 @@ describe Tabular::Models::Tab do
     subject { create(:tab, user: user) }
     let(:user) { create(:user) }
 
-    it 'returns the session\'s associated user' do
+    it 'returns the tab\'s associated user' do
       expect(subject.user).to eq(user)
+    end
+  end
+
+  describe '#comments' do
+    subject { create(:tab) }
+
+    let(:comment_one) { build(:comment, tab: subject) }
+    let(:comment_two) { build(:comment) }
+    let(:comments) { [comment_one, comment_two] }
+
+    before { comments.each(&:save!) }
+
+    it 'returns every comment for that tab' do
+      expect(subject.comments).to eq([comment_one])
     end
   end
 
