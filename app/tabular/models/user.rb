@@ -16,8 +16,27 @@ module Tabular
     class User < ActiveRecord::Base
       self.table_name = 'users'
 
-      has_many :sessions, dependent: :destroy
-      has_many :tabs, dependent: :destroy
+      has_many :sessions,
+        dependent: :destroy
+
+      has_many :tabs,
+        dependent: :destroy
+
+      has_many :followee_relationships,
+        class_name: Relationship.name,
+        foreign_key: :followee_id,
+        dependent: :destroy
+
+      has_many :follower_relationships,
+        class_name: Relationship.name,
+        foreign_key: :follower_id,
+        dependent: :destroy
+
+      has_many :followees,
+        through: :follower_relationships
+
+      has_many :followers,
+        through: :followee_relationships
 
       validates :username,
         presence: true,

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Models::User do
+describe Tabular::Models::User, :cur do
   describe '#valid?' do
     subject do
       described_class.new(
@@ -89,6 +89,93 @@ describe Tabular::Models::User do
         user_id = subject.id
         subject.destroy!
         expect(Tabular::Models::Tab.exists?(user_id: user_id)).to be false
+      end
+    end
+  end
+
+  describe '#follower_relationships' do
+    subject { create(:user) }
+    let(:relationship) { build(:relationship, follower: subject) }
+
+    before { relationship.save! }
+
+    it 'returns the relationships where the subject is being followed' do
+      expect(subject.follower_relationships.to_a).to eq([relationship])
+    end
+
+    context 'when the user is destroyed' do
+      def exists?(id)
+        Tabular::Models::Relationship.exists?(follower_id: id)
+      end
+
+      it 'destroys the relationship as well' do
+        expect { subject.destroy! }
+          .to change { exists?(subject.id) }
+          .from(true)
+          .to(false)
+      end
+    end
+  end
+
+  describe '#followee_relationships' do
+    subject { create(:user) }
+    let(:relationship) { build(:relationship, followee: subject) }
+
+    before { relationship.save! }
+
+    it 'returns the relationships where the subject is following somebody' do
+      expect(subject.followee_relationships.to_a).to eq([relationship])
+    end
+
+    context 'when the user is destroyed' do
+      def exists?(id)
+        Tabular::Models::Relationship.exists?(followee_id: id)
+      end
+
+      it 'destroys the relationship as well' do
+        expect { subject.destroy! }
+          .to change { exists?(subject.id) }
+          .from(true)
+          .to(false)
+      end
+    end
+  end
+
+  describe 'following associations' do
+    subject { create(:user) }
+
+    let(:followees) { [create(:user), create(:user)] }
+    let(:followers) { [create(:user), create(:user)] }
+
+    before do
+      followees.each do |user|
+        create(:relationship, follower: subject, followee: user)
+      end
+
+      followers.each do |user|
+        create(:relationship, follower: user, followee: subject)
+      end
+    end
+
+    describe '#followees' do
+      it 'returns users that the subject is following' do
+        expect(subject.followees).to eq(followees)
+      end
+    end
+
+    describe '#followers' do
+      it 'returns users that the subject is following' do
+        expect(subject.followers).to eq(followers)
+      end
+    end
+
+    context 'when the user is destroyed' do
+      before { subject.destroy! }
+
+      it 'does not destroy the other users' do
+        expect(followers + followees).to be_all do |user|
+          Tabular::Models::User.exists?(id: user.id)
+        end
       end
     end
   end
