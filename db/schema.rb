@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414002202) do
+ActiveRecord::Schema.define(version: 20150414185133) do
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "comment_body", limit: 65535, null: false
+    t.integer  "user_id",      limit: 4,     null: false
+    t.integer  "tab_id",       limit: 4,     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["tab_id"], name: "index_comments_on_tab_id", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "relationships", force: :cascade do |t|
     t.integer  "followee_id", limit: 4, null: false
@@ -57,6 +68,8 @@ ActiveRecord::Schema.define(version: 20150414002202) do
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "comments", "tabs"
+  add_foreign_key "comments", "users"
   add_foreign_key "relationships", "users", column: "followee_id"
   add_foreign_key "relationships", "users", column: "follower_id"
   add_foreign_key "sessions", "users"
