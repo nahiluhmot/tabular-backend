@@ -8,5 +8,13 @@ module Tabular
     autoload :Sessions, 'tabular/controllers/sessions'
     autoload :Tabs, 'tabular/controllers/tabs'
     autoload :Users, 'tabular/controllers/users'
+
+    # A list of all of the controllers.
+    Controllers = constants.map(&method(:const_get)).select do |constant|
+      constant.is_a?(Class) && constant.ancestors.include?(Sinatra::Base)
+    end
+
+    # This is the main rack application used by config.ru
+    Main = Rack::Cascade.new(Controllers)
   end
 end
