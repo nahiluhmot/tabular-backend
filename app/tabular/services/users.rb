@@ -33,6 +33,12 @@ module Tabular
         user_for_session!(session_key).destroy!
       end
 
+      # Find a user by their username.
+      def user_for_username!(username)
+        fail Errors::MalformedRequest unless username
+        Models::User.find_by(username: username) || fail(Errors::NoSuchModel)
+      end
+
       # Return teh user for the given session.
       def user_for_session!(session_key)
         fail Errors::Unauthorized unless session_key
