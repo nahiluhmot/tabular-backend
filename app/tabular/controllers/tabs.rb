@@ -6,6 +6,8 @@ module Tabular
       TAB_DISPLAY_KEYS = %i(id artist album title body user_id).freeze
       SEARCH_RESULTS_PER_PAGE = 25.freeze
 
+      helpers { include Services::Tabs }
+
       # Search for tabs.
       get '/tabs/?' do
         status 200
