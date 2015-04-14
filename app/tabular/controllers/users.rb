@@ -7,7 +7,7 @@ module Tabular
         status 201
         create_user!(
           *request_body(:username, :password, :password_confirmation)
-        ).as_json(only: %i(username id)).to_json
+        ).as_json(only: :username).to_json
       end
 
       # Update a user, in this case only updating their password.

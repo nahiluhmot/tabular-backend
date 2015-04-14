@@ -56,12 +56,7 @@ describe Tabular::Controllers::Users do
 
           context 'and the username is not taken' do
             let(:model) { Tabular::Models::User.find_by(username: username) }
-            let(:expected_response) do
-              {
-                id: model.id,
-                username: username
-              }
-            end
+            let(:expected_response) { { username: username } }
 
             it 'returns a 201 and creates a user' do
               expect(last_response.status).to eq(201)
