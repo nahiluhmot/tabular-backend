@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412172553) do
+ActiveRecord::Schema.define(version: 20150414002202) do
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer  "followee_id", limit: 4, null: false
+    t.integer  "follower_id", limit: 4, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "relationships", ["followee_id", "follower_id"], name: "index_relationships_on_followee_id_and_follower_id", unique: true, using: :btree
+  add_index "relationships", ["followee_id"], name: "index_relationships_on_followee_id", using: :btree
+  add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
 
   create_table "sessions", force: :cascade do |t|
     t.string   "key",        limit: 255, null: false
@@ -46,6 +57,8 @@ ActiveRecord::Schema.define(version: 20150412172553) do
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "relationships", "users", column: "followee_id"
+  add_foreign_key "relationships", "users", column: "follower_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "tabs", "users"
 end
