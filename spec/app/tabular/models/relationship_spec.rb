@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Models::Relationship, :cur do
+describe Tabular::Models::Relationship do
   describe '#valid?' do
     subject { described_class.new(options) }
     let(:options) { { follower_id: follower_id, followee_id: followee_id } }

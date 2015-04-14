@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Models::User, :cur do
+describe Tabular::Models::User do
   describe '#valid?' do
     subject do
       described_class.new(
