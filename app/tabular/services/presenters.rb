@@ -1,6 +1,6 @@
 module Tabular
   module Services
-    # This module defines the present method, which can be used to infer the
+    # This module defines the present method.
     module Presenters
       module_function
 

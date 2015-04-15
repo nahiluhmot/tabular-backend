@@ -23,12 +23,16 @@ describe Tabular::Controllers::Comments do
 
       let(:expected_response) do
         comments.map do |comment|
-          comment.as_json(
-            only: Tabular::Controllers::Comments::COMMENT_ATTRIBUTE_WHITELIST,
-            include: {
-              tab: { only: Tabular::Controllers::Tabs::TAB_ATTRIBUTE_WHITELIST }
+          {
+            'id' => comment.id,
+            'body' => comment.body,
+            'tab' => {
+              'id' => comment.tab.id,
+              'artist' => comment.tab.artist,
+              'album' => comment.tab.album,
+              'title' => comment.tab.title
             }
-          )
+          }
         end
       end
 
@@ -60,12 +64,13 @@ describe Tabular::Controllers::Comments do
 
       let(:expected_response) do
         comments.map do |comment|
-          comment.as_json(
-            only: Tabular::Controllers::Comments::COMMENT_ATTRIBUTE_WHITELIST,
-            include: {
-              user: { only: :username }
+          {
+            'id' => comment.id,
+            'body' => comment.body,
+            'user' => {
+              'username' => comment.user.username
             }
-          )
+          }
         end
       end
 

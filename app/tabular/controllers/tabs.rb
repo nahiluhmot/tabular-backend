@@ -3,10 +3,12 @@ module Tabular
     # This controller handles requests dealing with tabs.
     class Tabs < Base
       TAB_ATTRIBUTE_WHITELIST = %i(artist album title body).freeze
-      TAB_DISPLAY_KEYS = %i(id artist album title body user_id).freeze
       SEARCH_RESULTS_PER_PAGE = 25.freeze
 
-      helpers { include Services::Tabs }
+      helpers do
+        include Services::Presenters
+        include Services::Tabs
+      end
 
       # Search for tabs.
       get '/tabs/?' do
@@ -14,20 +16,20 @@ module Tabular
         query, page = params.values_at(:query, :page)
         page ||= 1
         tabs = search_tabs(query, limit: SEARCH_RESULTS_PER_PAGE, page: page)
-        tabs.map { |tab| tab.as_json(only: TAB_DISPLAY_KEYS) }.to_json
+        tabs.map { |tab| present! tab, user: true, short: true }.to_json
       end
 
       # Create a tab.
       post '/tabs/?' do
         status 201
         tab = create_tab!(session_key, *request_body(*TAB_ATTRIBUTE_WHITELIST))
-        tab.as_json(only: TAB_DISPLAY_KEYS).to_json
+        present_json! tab
       end
 
       # Retrieve a tab by its id.
       get '/tabs/:id/' do |id|
         status 200
-        find_tab_by_id!(id).as_json(only: TAB_DISPLAY_KEYS).to_json
+        present_json! find_tab_by_id!(id), user: true, comments: true
       end
 
       # Edit a tab.

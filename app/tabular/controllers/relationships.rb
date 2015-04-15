@@ -12,18 +12,14 @@ module Tabular
       get '/users/:username/followers/?' do |username|
         status 200
 
-        followers!(username).map do |follower|
-          follower.as_json(only: :username)
-        end.to_json
+        followers!(username).map(&method(:present!)).to_json
       end
 
       # Get the followers for a user.
       get '/users/:username/followees/?' do |username|
         status 200
 
-        followees!(username).map do |followee|
-          followee.as_json(only: :username)
-        end.to_json
+        followees!(username).map(&method(:present!)).to_json
       end
 
       # Follow a user.

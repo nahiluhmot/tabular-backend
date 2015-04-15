@@ -13,7 +13,15 @@ describe Tabular::Controllers::Tabs do
     let(:tabs) { [tab_one, tab_two, tab_three] }
     let(:expected_body) do
       matched_tabs.map do |tab|
-        tab.as_json(only: Tabular::Controllers::Tabs::TAB_DISPLAY_KEYS)
+        {
+          'id' => tab.id,
+          'artist' => tab.artist,
+          'album' => tab.album,
+          'title' => tab.title,
+          'user' => {
+            'username' => tab.user.username
+          }
+        }
       end
     end
 
@@ -64,7 +72,7 @@ describe Tabular::Controllers::Tabs do
           post '/tabs/', post_body
 
           expect(status).to eq(201)
-          expect(body).to include(options.merge('user_id' => user.id))
+          expect(body).to include(options)
           expect(body['id']).to be_a(Integer)
         end
       end
@@ -83,7 +91,17 @@ describe Tabular::Controllers::Tabs do
     context 'when the queried id is in the database' do
       let(:tab) { create(:tab) }
       let(:expected_body) do
-        tab.as_json(only: Tabular::Controllers::Tabs::TAB_DISPLAY_KEYS)
+        {
+          'id' => tab.id,
+          'artist' => tab.artist,
+          'album' => tab.album,
+          'title' => tab.title,
+          'body' => tab.body,
+          'comments' => [],
+          'user' => {
+            'username' => tab.user.username
+          }
+        }
       end
 
       it 'returns the tab associated with the given id' do
