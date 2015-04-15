@@ -3,8 +3,9 @@ module Tabular
     # This controller deals with follower/following relationships.
     class Relationships < Base
       helpers do
-        include Services::Users
+        include Services::Presenters
         include Services::Relationships
+        include Services::Users
       end
 
       # Get the followers for a user.
@@ -30,7 +31,7 @@ module Tabular
         status 201
 
         follow!(session_key, username)
-        user_for_username!(username).as_json(only: :username).to_json
+        present_json! user_for_username!(username)
       end
 
       # Unfollow a user.

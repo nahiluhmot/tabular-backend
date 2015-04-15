@@ -3,20 +3,20 @@ module Tabular
     # This controller handles requests dealing with users.
     class Users < Base
       helpers do
-        include Services::Users
+        include Services::Presenters
         include Services::Sessions
+        include Services::Users
       end
 
       # Create a new user and log them in.
       post '/users/?' do
         status 201
-        create_user!(
-          *request_body(:username, :password, :password_confirmation)
-        ).as_json(only: :username).to_json
+        args = request_body(:username, :password, :password_confirmation)
+        present_json! create_user!(*args)
       end
 
       # Update a user, in this case only updating their password.
-      put '/users/' do
+      put '/users/?' do
         status 204
 
         password, confirmation = request_body(:password, :password_confirmation)
@@ -26,12 +26,10 @@ module Tabular
         response.set_cookie :session_key,
           value: session.key,
           expires: 7.days.from_now
-
-        session.as_json(only: :key).to_json
       end
 
       # Delete the user if they're logged in.
-      delete '/users/' do
+      delete '/users/?' do
         status 204
         destroy_user!(session_key)
       end
