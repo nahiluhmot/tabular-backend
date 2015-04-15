@@ -1,0 +1,12 @@
+.dockerignore
+.git/
+.gitignore
+.rbenv-version
+.rspec
+.rubocop.yml
+
+coverage/
+spec/
+
+Dockerfile
+README.md
