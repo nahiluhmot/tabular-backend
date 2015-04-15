@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414185133) do
+ActiveRecord::Schema.define(version: 20150415202549) do
+
+  create_table "activity_logs", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4,   null: false
+    t.integer  "activity_id",   limit: 4,   null: false
+    t.string   "activity_type", limit: 255, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "activity_logs", ["user_id"], name: "index_activity_logs_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.text     "body",       limit: 65535, null: false
@@ -68,6 +78,7 @@ ActiveRecord::Schema.define(version: 20150414185133) do
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "activity_logs", "users"
   add_foreign_key "comments", "tabs"
   add_foreign_key "comments", "users"
   add_foreign_key "relationships", "users", column: "followee_id"
