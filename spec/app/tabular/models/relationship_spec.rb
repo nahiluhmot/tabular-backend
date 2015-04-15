@@ -5,7 +5,7 @@ describe Tabular::Models::Relationship do
     subject { described_class.new(options) }
     let(:options) { { follower_id: follower_id, followee_id: followee_id } }
     let(:follower_id) { follower.id }
-    let(:followee_id) { follower.id }
+    let(:followee_id) { followee.id }
     let(:follower) { create(:user) }
     let(:followee) { create(:user) }
 
@@ -29,6 +29,14 @@ describe Tabular::Models::Relationship do
       context 'when the follwee is a valid user' do
         context 'but the relationship is already in the database' do
           before { described_class.create!(options) }
+
+          it 'is not valid' do
+            expect(subject).to_not be_valid
+          end
+        end
+
+        context 'but the user is trying to follow themself' do
+          let(:followee_id) { follower_id }
 
           it 'is not valid' do
             expect(subject).to_not be_valid

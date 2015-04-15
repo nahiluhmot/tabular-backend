@@ -29,6 +29,8 @@ module Tabular
 
       validate :ensure_unique_follower_and_followee!
 
+      validate :ensure_follower_and_followee_different!
+
       validates_associated :followee
 
       validates_associated :follower
@@ -40,6 +42,12 @@ module Tabular
         return unless Relationship.exists?(query)
         errors.add(:follower_id, "already follows #{followee_id}")
         errors.add(:followee_id, "is already followed by #{follower_id}")
+      end
+
+      def ensure_follower_and_followee_different!
+        return unless follower_id == followee_id
+        errors.add(:follower_id, "cannot follow #{followee_id}")
+        errors.add(:followee_id, "cannot be followed by #{follower_id}")
       end
     end
   end
