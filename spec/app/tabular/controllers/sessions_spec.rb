@@ -8,7 +8,6 @@ describe Tabular::Controllers::Sessions do
     let(:options) { { username: username, password: password } }
     let(:username) { 'nahiluhmot' }
     let(:password) { 'trustno1' }
-    let(:response_body) { JSON.parse(last_response.body).symbolize_keys }
 
     context 'when the POST body is malformed' do
       let(:options) { 'NOT JSON' }
@@ -50,11 +49,10 @@ describe Tabular::Controllers::Sessions do
           it 'creates a new session' do
             post '/sessions/', post_body
 
-            expect(last_response.status).to eq(201)
+            expect(last_response.status).to eq(204)
             expect(session_key).to be_present
             expect(Tabular::Models::Session.exists?(key: session_key))
               .to be true
-            expect(response_body).to eq(key: session_key)
           end
         end
       end

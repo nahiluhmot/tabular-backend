@@ -7,14 +7,12 @@ module Tabular
 
       # Create a session by authenticating a user via username and password.
       post '/sessions/?' do
-        status 201
+        status 204
         session = login!(*request_body(:username, :password))
 
         response.set_cookie :session_key,
           value: session.key,
           expires: 7.days.from_now
-
-        session.as_json(only: :key).to_json
       end
 
       # Logout of the active session.
