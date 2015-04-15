@@ -5,5 +5,6 @@ module Tabular
   autoload :Controllers, 'tabular/controllers'
   autoload :Errors, 'tabular/errors'
   autoload :Models, 'tabular/models'
+  autoload :Presenters, 'tabular/presenters'
   autoload :Services, 'tabular/services'
 end
