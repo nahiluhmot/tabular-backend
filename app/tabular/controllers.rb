@@ -4,6 +4,7 @@ module Tabular
     SESSION_KEY_HEADER = 'X_TABULAR_SESSION_KEY'.freeze
 
     autoload :Base, 'tabular/controllers/base'
+    autoload :Comments, 'tabular/controllers/comments'
     autoload :Relationships, 'tabular/controllers/relationships'
     autoload :Sessions, 'tabular/controllers/sessions'
     autoload :Tabs, 'tabular/controllers/tabs'
