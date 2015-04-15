@@ -1,11 +1,12 @@
 require 'simplecov'
 SimpleCov.start do
-  add_group 'App', 'app/'
-  add_group 'Controllers', 'app/tabular/controllers'
-  add_group 'Models', 'app/tabular/models'
-  add_group 'Presenters', 'app/tabular/presenters'
-  add_group 'Services', 'app/tabular/services'
-  add_group 'Specs', 'spec'
+  add_filter '/spec/'
+
+  add_group 'App', '/app/'
+  add_group 'Controllers', '/app/tabular/controllers'
+  add_group 'Models', '/app/tabular/models'
+  add_group 'Presenters', '/app/tabular/presenters'
+  add_group 'Services', '/app/tabular/services'
 end
 
 ENV['RACK_ENV'] ||= 'test'
