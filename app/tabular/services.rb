@@ -4,6 +4,7 @@ module Tabular
   module Services
     autoload :Comments, 'tabular/services/comments'
     autoload :Crypto, 'tabular/services/crypto'
+    autoload :Logger, 'tabular/services/logger'
     autoload :Presenters, 'tabular/services/presenters'
     autoload :Relationships, 'tabular/services/relationships'
     autoload :Sessions, 'tabular/services/sessions'

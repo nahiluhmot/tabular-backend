@@ -6,6 +6,7 @@ ENV['RACK_ENV'] ||= 'test'
 $LOAD_PATH << File.expand_path('app', '.')
 require 'tabular'
 
+Dir['config/initializers/**/*.rb'].each(&method(:load))
 Dir['spec/factories/**/*.rb'].each(&method(:load))
 
 RSpec.configure do |config|

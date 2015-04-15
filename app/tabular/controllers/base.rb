@@ -6,6 +6,8 @@ module Tabular
       set :raise_errors, false
       set :show_exceptions, false
 
+      use Rack::CommonLogger, Services::Logger.raw_logger
+
       before { content_type :json }
 
       error do |err|
@@ -26,15 +28,17 @@ module Tabular
         end
       end
 
-      def session_key
-        request.env["HTTP_#{SESSION_KEY_HEADER}"]
-      end
+      helpers do
+        def session_key
+          request.env["HTTP_#{SESSION_KEY_HEADER}"]
+        end
 
-      def request_body(*keys)
-        body = JSON.parse(request.body.tap(&:rewind).read).symbolize_keys
-        keys.empty? ? body : body.values_at(*keys)
-      rescue JSON::JSONError => ex
-        raise Errors::MalformedRequest, ex
+        def request_body(*keys)
+          body = JSON.parse(request.body.tap(&:rewind).read).symbolize_keys
+          keys.empty? ? body : body.values_at(*keys)
+        rescue JSON::JSONError => ex
+          raise Errors::MalformedRequest, ex
+        end
       end
     end
   end
