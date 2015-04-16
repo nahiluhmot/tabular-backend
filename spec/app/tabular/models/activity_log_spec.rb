@@ -65,8 +65,9 @@ describe Tabular::Models::ActivityLog do
   end
 
   describe '#user' do
-    subject { build(:activity_log, user: user) }
+    subject { comment.activity_log }
     let(:user) { create(:user) }
+    let(:comment) { create(:comment, user: user) }
 
     it 'returns the user' do
       expect(subject.user).to eq(user)
@@ -74,7 +75,7 @@ describe Tabular::Models::ActivityLog do
   end
 
   describe '#activity' do
-    subject { build(:activity_log, activity: activity) }
+    subject { activity.activity_log }
 
     context 'when the activity is a comment' do
       let(:activity) { create(:comment) }
