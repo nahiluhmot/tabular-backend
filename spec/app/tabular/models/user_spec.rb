@@ -137,6 +137,31 @@ describe Tabular::Models::User do
     end
   end
 
+  describe '#activity_logs' do
+    subject { create(:user) }
+    let(:comment) { build(:comment, user: subject) }
+    let(:tab) { build(:comment, user: subject) }
+    let(:models) { [comment, tab] }
+    let(:logs) { models.map(&:activity_log) }
+
+    before { models.each(&:save!) }
+
+    it 'returns the users activity logs' do
+      expect(subject.activity_logs).to eq(logs)
+    end
+
+    context 'when the user is destroyed' do
+      let(:ids) { logs.map(&:id) }
+
+      it 'destroys the logs as well' do
+        expect { subject.destroy! }
+          .to change { Tabular::Models::ActivityLog.exists?(id: ids) }
+          .from(true)
+          .to(false)
+      end
+    end
+  end
+
   describe '#followee_relationships' do
     subject { create(:user) }
     let(:relationship) { build(:relationship, followee: subject) }

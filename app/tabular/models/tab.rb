@@ -22,6 +22,10 @@ module Tabular
 
       belongs_to :user
 
+      has_one :activity_log,
+        as: :activity,
+        dependent: :destroy
+
       has_many :comments,
         dependent: :destroy
 
@@ -45,6 +49,8 @@ module Tabular
         presence: true
 
       validates_associated :user
+
+      after_create { ActivityLog.create!(activity: self, user: user) }
     end
   end
 end

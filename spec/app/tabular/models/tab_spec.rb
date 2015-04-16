@@ -57,13 +57,30 @@ describe Tabular::Models::Tab do
     end
   end
 
-  describe '#destroy' do
+  describe 'creation' do
+    subject { build(:tab) }
+    let(:query) do
+      {
+        activity_type: described_class.name,
+        activity_id: subject.id
+      }
+    end
+
+    it 'creates an activity log as well' do
+      subject.save!
+      expect(Tabular::Models::ActivityLog.exists?(query)).to be true
+    end
+  end
+
+  describe '#destroy!' do
     subject { create(:tab) }
 
-    it 'does not destroy the tab\'s associated user' do
+    it 'only destroys the tab and activity log' do
       user_id = subject.user_id
+      log_id = subject.activity_log.id
       subject.destroy!
       expect(Tabular::Models::User.exists?(id: user_id)).to be true
+      expect(Tabular::Models::ActivityLog.exists?(id: log_id)).to be false
     end
   end
 end

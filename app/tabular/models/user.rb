@@ -25,6 +25,9 @@ module Tabular
       has_many :comments,
         dependent: :destroy
 
+      has_many :activity_logs,
+        dependent: :destroy
+
       has_many :followee_relationships,
         class_name: Relationship.name,
         foreign_key: :followee_id,

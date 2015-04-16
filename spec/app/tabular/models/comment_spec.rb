@@ -44,15 +44,32 @@ describe Tabular::Models::Comment do
     end
   end
 
-  describe '#destroy' do
+  describe 'creation' do
+    subject { build(:comment) }
+    let(:query) do
+      {
+        activity_type: described_class.name,
+        activity_id: subject.id
+      }
+    end
+
+    it 'creates an activity log as well' do
+      subject.save!
+      expect(Tabular::Models::ActivityLog.exists?(query)).to be true
+    end
+  end
+
+  describe '#destroy!' do
     subject { create(:comment) }
 
-    it 'does not destroy the comment\'s associated user or tab' do
+    it 'only destroyes the comment and its activity logs' do
       user_id = subject.user_id
       tab_id = subject.tab_id
+      log_id = subject.activity_log.id
       subject.destroy!
       expect(Tabular::Models::User.exists?(id: user_id)).to be true
       expect(Tabular::Models::Tab.exists?(id: tab_id)).to be true
+      expect(Tabular::Models::ActivityLog.exists?(id: log_id)).to be false
     end
   end
 end
