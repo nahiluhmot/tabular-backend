@@ -7,7 +7,7 @@ describe Tabular::Services::ActivityFeed do
     let(:followee_two) { create(:user) }
     let(:tab) { build(:tab, user: followee_one) }
     let(:comment) { build(:tab, user: followee_two) }
-    let(:activities)  { [tab, comment] }
+    let(:activities)  { [comment, tab] }
     let(:options) { { page: 1, limit: 25 } }
     let(:session) { create(:session, user: user) }
     let(:key) { session.key }

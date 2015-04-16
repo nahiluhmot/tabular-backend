@@ -16,6 +16,7 @@ module Tabular
             WHERE sessions.key = :session_key
           )
         )
+        ORDER BY activity_logs.created_at DESC, activity_logs.id DESC
         LIMIT :limit
         OFFSET :offset
       EOS

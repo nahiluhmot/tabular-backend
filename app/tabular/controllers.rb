@@ -5,6 +5,7 @@ module Tabular
 
     autoload :Base, 'tabular/controllers/base'
     autoload :Comments, 'tabular/controllers/comments'
+    autoload :Feeds, 'tabular/controllers/feeds'
     autoload :Relationships, 'tabular/controllers/relationships'
     autoload :Sessions, 'tabular/controllers/sessions'
     autoload :Tabs, 'tabular/controllers/tabs'
