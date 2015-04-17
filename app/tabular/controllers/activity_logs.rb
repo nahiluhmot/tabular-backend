@@ -15,6 +15,17 @@ module Tabular
         feed = feed_for!(session_key, limit: FEED_RESULTS_PER_PAGE, page: page)
         feed.map(&method(:present!)).to_json
       end
+
+      get '/users/:username/feed/?' do |username|
+        status 200
+        page = params[:page].try(:to_i) || 1
+        activities = recent_activity_for!(
+          username,
+          limit: FEED_RESULTS_PER_PAGE,
+          page: page
+        )
+        activities.map(&method(:present!)).to_json
+      end
     end
   end
 end

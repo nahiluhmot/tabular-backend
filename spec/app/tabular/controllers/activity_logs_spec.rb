@@ -93,4 +93,53 @@ describe Tabular::Controllers::ActivityLogs do
       end
     end
   end
+
+  describe 'GET /users/:username/feed/' do
+    let(:user) { create(:user) }
+    let(:username) { user.username }
+    let(:options) { { page: 1 } }
+
+    context 'when the username is invalid' do
+      let(:username) { 'bad_username' }
+
+      it 'returns a 404' do
+        get "/users/#{username}/feed/", options
+
+        expect(status).to eq(404)
+      end
+    end
+
+    context 'when the username is valid' do
+      context 'but the query parameters are invalid' do
+        let(:options) { { page: -1 } }
+
+        it 'returns a 400' do
+          get "/users/#{username}/feed/", options
+
+          expect(status).to eq(400)
+        end
+      end
+
+      context 'and the query is valid' do
+        let(:tabs) { 10.times.map { build(:tab, user: user) } }
+        let(:comments) { 10.times.map { build(:comment, user: user) } }
+        let(:other_comments) { tabs.map { |tab| build(:comment, tab: tab) } }
+        let(:expected_body) do
+          tabs.zip(comments).flatten.reverse.map(&method(:present))
+        end
+
+        before do
+          (tabs.zip(comments).flatten).each(&:save!)
+          other_comments.each(&:save!)
+        end
+
+        it 'returns the recent activity for the user' do
+          get "/users/#{username}/feed/", options
+
+          expect(status).to eq(200)
+          expect(body).to eq(expected_body)
+        end
+      end
+    end
+  end
 end
