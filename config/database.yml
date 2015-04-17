@@ -18,3 +18,10 @@ test:
   username: tabular_test
   password: tabular_test
   host: localhost
+
+production:
+  <<: *common
+  database: tabular_production
+  username: <%= ENV['TABULAR_DATABASE_USERNAME'] %>
+  password: <%= ENV['TABULAR_DATABASE_PASSWORD'] %>
+  host: <%= ENV['TABULAR_DATABASE_HOST'] %>
