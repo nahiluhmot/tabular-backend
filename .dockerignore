@@ -4,6 +4,7 @@
 .rbenv-version
 .rspec
 .rubocop.yml
+.travis.yml
 
 coverage/
 spec/
