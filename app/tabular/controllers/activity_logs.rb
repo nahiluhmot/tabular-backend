@@ -1,11 +1,11 @@
 module Tabular
   module Controllers
     # This controller serves the feed for users.
-    class Feeds < Base
+    class ActivityLogs < Base
       FEED_RESULTS_PER_PAGE = 25
 
       helpers do
-        include Services::ActivityFeed
+        include Services::ActivityLogs
         include Services::Presenters
       end
 

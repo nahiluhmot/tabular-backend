@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Controllers::Feeds do
+describe Tabular::Controllers::ActivityLogs do
   subject { last_response }
   let(:app) { described_class.new }
   let(:status) { subject.status }

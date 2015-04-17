@@ -1,7 +1,7 @@
 module Tabular
   module Services
     # This services handles loading the activity feed for users.
-    module ActivityFeed
+    module ActivityLogs
       module_function
 
       FEED_QUERY = <<-EOS.freeze

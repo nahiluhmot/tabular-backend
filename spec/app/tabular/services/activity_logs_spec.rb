@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Tabular::Services::ActivityFeed do
+describe Tabular::Services::ActivityLogs do
   describe '.feed_for!' do
     let(:user) { create(:user) }
     let(:followee_one) { create(:user) }
