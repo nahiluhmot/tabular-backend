@@ -30,7 +30,10 @@ describe Tabular::Controllers::Comments do
               'id' => comment.tab.id,
               'artist' => comment.tab.artist,
               'album' => comment.tab.album,
-              'title' => comment.tab.title
+              'title' => comment.tab.title,
+              'user' => {
+                'username' => comment.tab.user.username
+              }
             }
           }
         end

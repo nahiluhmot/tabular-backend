@@ -19,7 +19,10 @@ describe Tabular::Presenters::ActivityLog do
               'id' => activity.tab.id,
               'artist' => activity.tab.artist,
               'album' => activity.tab.album,
-              'title' => activity.tab.title
+              'title' => activity.tab.title,
+              'user' => {
+                'username' => activity.tab.user.username
+              }
             }
           }
         }

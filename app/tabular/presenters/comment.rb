@@ -9,7 +9,12 @@ module Tabular
       def present(options = nil)
         tab, user = (options || {}).values_at(:tab, :user)
         json = { only: [:id, :body], include: {} }
-        json[:include][:tab] = { only: [:id, :artist, :album, :title] } if tab
+        if tab
+          json[:include][:tab] = {
+            only: [:id, :artist, :album, :title],
+            include: { user: { only: :username } }
+          }
+        end
         json[:include][:user] = { only: :username } if user
         @comment.as_json(json)
       end

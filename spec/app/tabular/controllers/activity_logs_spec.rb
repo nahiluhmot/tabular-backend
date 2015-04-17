@@ -6,6 +6,36 @@ describe Tabular::Controllers::ActivityLogs do
   let(:status) { subject.status }
   let(:body) { JSON.parse(subject.body) }
 
+  def present_tab(tab)
+    {
+      'tab' => {
+        'id' => tab.id,
+        'artist' => tab.artist,
+        'album' => tab.album,
+        'title' => tab.title,
+        'user' => { 'username' => tab.user.username }
+      }
+    }
+  end
+
+  def present_comment(comment)
+    {
+      'comment' => {
+        'id' => comment.id,
+        'body' => comment.body,
+        'user' => { 'username' => comment.user.username }
+      }.merge(present_tab(comment.tab))
+    }
+  end
+
+  def present(activity)
+    if activity.is_a?(Tabular::Models::Tab)
+      present_tab(activity)
+    else
+      present_comment(activity)
+    end
+  end
+
   describe 'GET /feed/' do
     let(:options) { { page: 1 } }
 
@@ -45,37 +75,7 @@ describe Tabular::Controllers::ActivityLogs do
         let(:other_tabs) { 5.times.map { build(:tab, user: non_followee) } }
 
         let(:expected_body) do
-          tabs.zip(comments).flatten.reverse.map do |activity|
-            if activity.is_a?(Tabular::Models::Tab)
-              {
-                'tab' => {
-                  'id' => activity.id,
-                  'artist' => activity.artist,
-                  'album' => activity.album,
-                  'title' => activity.title,
-                  'user' => {
-                    'username' => activity.user.username
-                  }
-                }
-              }
-            else
-              {
-                'comment' => {
-                  'id' => activity.id,
-                  'body' => activity.body,
-                  'user' => {
-                    'username' => activity.user.username
-                  },
-                  'tab' => {
-                    'id' => activity.tab.id,
-                    'artist' => activity.tab.artist,
-                    'album' => activity.tab.album,
-                    'title' => activity.tab.title
-                  }
-                }
-              }
-            end
-          end
+          tabs.zip(comments).flatten.reverse.map(&method(:present))
         end
 
         before do
