@@ -13,7 +13,7 @@
 module Tabular
   module Models
     # This model represents an action that was performed by the user. It is used
-    # to generate the activity feed.
+    # to generate the user's homepage and the recent activity feed for a user.
     class ActivityLog < ActiveRecord::Base
       self.table_name = 'activity_logs'
 
