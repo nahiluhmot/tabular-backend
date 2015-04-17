@@ -46,4 +46,39 @@ describe Tabular::Services::ActivityFeed do
       end
     end
   end
+
+  describe '.recent_activity_for!' do
+    let(:user) { create(:user) }
+    let(:tab) { build(:tab, user: user) }
+    let(:comment) { build(:tab, user: user) }
+    let(:activities)  { [comment, tab] }
+    let(:options) { { page: 1, limit: 25 } }
+
+    before { activities.each(&:save!) }
+
+    context 'when the session key is invalid' do
+      it 'fails with NoSuchModel' do
+        expect { subject.recent_activity_for!('bad_username', options) }
+          .to raise_error(Tabular::Errors::NoSuchModel)
+      end
+    end
+
+    context 'when the session key is valid' do
+      context 'but limit or offset is invalid' do
+        it 'fails with MalformedRequest' do
+          expect { subject.recent_activity_for!(user.username, nil) }
+            .to raise_error(Tabular::Errors::MalformedRequest)
+        end
+      end
+
+      context 'and the limit and offset are valid' do
+        let(:feed) { subject.recent_activity_for!(user.username, options) }
+
+        it 'returns the activity feed for the user' do
+          expect(feed.length).to eq(2)
+          expect(feed.map(&:activity)).to eq(activities.reverse)
+        end
+      end
+    end
+  end
 end
