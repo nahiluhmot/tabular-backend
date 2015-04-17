@@ -9,11 +9,9 @@ module Tabular
         FROM activity_logs
         INNER JOIN relationships
         ON activity_logs.user_id = relationships.followee_id
-        WHERE relationships.follower_id IN (
-          SELECT sessions.user_id
-          FROM sessions
-          WHERE sessions.key = :session_key
-        )
+        INNER JOIN sessions
+        ON relationships.follower_id = sessions.user_id
+        WHERE sessions.key = :session_key
         ORDER BY activity_logs.created_at DESC, activity_logs.id DESC
         LIMIT :limit
         OFFSET :offset
