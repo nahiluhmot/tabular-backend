@@ -15,12 +15,12 @@ RUN apt-get -y install \
   libyaml-dev \
   zlib1g-dev
 
-# Download ruby 2.2.0
+# Download ruby 2.2.2
 WORKDIR /tmp/
-RUN curl http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.0.tar.gz | tar xz
+RUN curl http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.gz | tar xz
 
-# Install ruby 2.2.0
-WORKDIR /tmp/ruby-2.2.0/
+# Install ruby 2.2.2
+WORKDIR /tmp/ruby-2.2.2/
 RUN ./configure --disable-install-rdoc
 RUN make -j 4
 RUN make -j 4 install
