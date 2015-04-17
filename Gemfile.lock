@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/sinatra/sinatra
-  revision: 6ac6acc56d0d08068ed3cf6bf2916d18b3995c7f
+  revision: 0a0957aefa86dc2ab7f0698f2c1ca2df8e33b511
   specs:
     sinatra (1.4.6)
       rack (~> 1.4)
@@ -45,10 +45,10 @@ GEM
     json (1.8.2)
     kgio (2.9.3)
     method_source (0.8.2)
-    minitest (5.5.1)
+    minitest (5.6.0)
     multi_json (1.11.0)
     mysql2 (0.3.18)
-    parser (2.2.0.3)
+    parser (2.2.2.0)
       ast (>= 1.1, < 3.0)
     powerpack (0.1.0)
     pry (0.10.1)
