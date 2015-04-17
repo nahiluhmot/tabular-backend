@@ -1,6 +1,6 @@
 module Tabular
   module Presenters
-    # This module contains the presentation logic comment.
+    # This module contains the presentation logic for comments.
     class Comment
       def initialize(comment)
         @comment = comment

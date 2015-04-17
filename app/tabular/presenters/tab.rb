@@ -1,6 +1,6 @@
 module Tabular
   module Presenters
-    # This module contains the presentation logic tabs.
+    # This module contains the presentation logic for tabs.
     class Tab
       def initialize(tab)
         @tab = tab

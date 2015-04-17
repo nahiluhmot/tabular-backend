@@ -1,6 +1,6 @@
 module Tabular
   module Presenters
-    # This module contains the presentation logic users.
+    # This module contains the presentation logic for users.
     class User
       def initialize(user)
         @user = user
