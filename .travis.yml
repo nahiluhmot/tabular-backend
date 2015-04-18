@@ -4,6 +4,9 @@ rvm:
   - 2.1.6
   - 2.2.2
 sudo: required
+env:
+  - RACK_ENV=test
+  - TABULAR_DATABASE_PORT=3306
 install:
   - sudo apt-get remove mysql-common mysql-server-5.5 mysql-server-core-5.5 mysql-client-5.5 mysql-client-core-5.5
   - sudo apt-get autoremove
@@ -22,4 +25,5 @@ before_script:
   - mysql -e "CREATE DATABASE IF NOT EXISTS tabular_test" -uroot
   - mysql -e "CREATE USER 'tabular_test'@'localhost' IDENTIFIED BY 'tabular_test';" -uroot
   - mysql -e "GRANT ALL PRIVILEGES ON tabular_test.* TO 'tabular_test'@'localhost';" -uroot
-script: RACK_ENV=test bundle exec rake db:migrate default
+  - bundle exec rake db:migrate
+script: bundle exec rake
