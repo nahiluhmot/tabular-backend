@@ -6,6 +6,7 @@ rvm:
 sudo: required
 env: RACK_ENV=test TABULAR_DATABASE_PORT=3306
 install:
+  - bundle install --jobs=3 --retry=3 --deployment
   - sudo apt-get remove mysql-common mysql-server-5.5 mysql-server-core-5.5 mysql-client-5.5 mysql-client-core-5.5
   - sudo apt-get autoremove
   - sudo apt-get install libaio1
@@ -16,12 +17,11 @@ install:
   - sudo sed -i'' 's/table_cache/table_open_cache/' /etc/mysql/my.cnf
   - sudo sed -i'' 's/log_slow_queries/slow_query_log/' /etc/mysql/my.cnf
   - sudo sed -i'' 's/basedir[^=]\+=.*$/basedir = \/opt\/mysql\/server-5.6/' /etc/mysql/my.cnf
-  - bundle install --jobs=3 --retry=3 --deployment
 before_script:
   - sudo /etc/init.d/mysql.server start
   - mysql --version
   - mysql -e "CREATE DATABASE IF NOT EXISTS tabular_test" -uroot
   - mysql -e "CREATE USER 'tabular_test'@'localhost' IDENTIFIED BY 'tabular_test';" -uroot
   - mysql -e "GRANT ALL PRIVILEGES ON tabular_test.* TO 'tabular_test'@'localhost';" -uroot
-  - bundle exec rake db:migrate
+  - bundle exec rake db:migrate db:test:prepare
 script: bundle exec rake
