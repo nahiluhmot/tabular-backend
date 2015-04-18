@@ -4,8 +4,8 @@ common: &common
   encoding: utf8
   pool: 5
   timeout: 5000
-<% if ENV['TABULAR_DATABASE_PORT'] %>
-  port: <%= ENV['TABULAR_DATABASE_PORT'] %>
+<% if port = ENV['TABULAR_DATABASE_PORT'].try(:to_i) %>
+  port: <%= port %>
 <% end %>
 
 development:
