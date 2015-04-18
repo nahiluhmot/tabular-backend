@@ -14,6 +14,8 @@ module Tabular
         define_method(method) do |*args, &block|
           raw_logger.public_send(method, *args, &block)
         end
+
+        module_function(method)
       end
     end
   end
