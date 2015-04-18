@@ -6,10 +6,10 @@ namespace :environment do
   end
 
   desc 'Run all of the application initializers'
-  task initializers: :"environment:app" do
+  task initializers: [:'db:load_config', :'environment:app'] do
     Dir['config/initializers/**/*.rb'].each(&method(:load))
   end
 end
 
 desc 'Load the application environment'
-task environment: %i(db:load_config environment:app environment:initializers)
+task environment: :'environment:initializers'

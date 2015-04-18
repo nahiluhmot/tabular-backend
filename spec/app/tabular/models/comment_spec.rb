@@ -9,7 +9,7 @@ describe Tabular::Models::Comment do
     let(:user_id) { create(:user).id }
     let(:body) { 'Cool song' }
 
-    %i(tab_id user_id body).each do |field|
+    [:tab_id, :user_id, :body].each do |field|
       context "when the #{field} is not set" do
         let(field) { nil }
 

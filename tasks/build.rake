@@ -11,4 +11,4 @@ namespace :build do
 end
 
 desc 'Run the app build'
-task build: %i(build:spec build:quality)
+task build: [:'build:spec', :'build:quality']

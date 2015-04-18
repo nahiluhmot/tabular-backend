@@ -2,7 +2,7 @@ module Tabular
   module Controllers
     # This controller handles requests dealing with tabs.
     class Tabs < Base
-      TAB_ATTRIBUTE_WHITELIST = %i(artist album title body).freeze
+      TAB_ATTRIBUTE_WHITELIST = [:artist, :album, :title, :body].freeze
       SEARCH_RESULTS_PER_PAGE = 25.freeze
 
       helpers do

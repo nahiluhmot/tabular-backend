@@ -17,7 +17,7 @@ describe Tabular::Models::Tab do
     let(:body) { 'Some Tab' }
     let(:user_id) { create(:user).id }
 
-    %i(artist album title body user_id).each do |field|
+    [:artist, :album, :title, :body, :user_id].each do |field|
       context "when the #{field} is not set" do
         let(field) { nil }
 

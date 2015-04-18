@@ -38,7 +38,7 @@ module Tabular
       private
 
       def ensure_unique_follower_and_followee!
-        query = as_json(only: %i(follower_id followee_id))
+        query = as_json(only: [:follower_id, :followee_id])
         return unless Relationship.exists?(query)
         errors.add(:follower_id, "already follows #{followee_id}")
         errors.add(:followee_id, "is already followed by #{follower_id}")

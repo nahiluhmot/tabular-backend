@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user, aliases: %i(follower followee), class: Tabular::Models::User do
+  factory_definition = proc do
     sequence(:username) { |n| "test_user_#{n}" }
 
     # For efficiency, use the same password salt and hash in every test.
@@ -8,4 +8,9 @@ FactoryGirl.define do
     password_salt salt
     password_hash hash
   end
+
+  factory :user,
+    aliases: [:follower, :followee],
+    class: Tabular::Models::User,
+    &factory_definition
 end
