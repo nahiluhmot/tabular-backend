@@ -1,6 +1,9 @@
 # Start from an ubuntu image.
 FROM ubuntu:14.04
 
+# Default startup command
+CMD bundle exec rake web
+
 # Install system dependencies
 RUN apt-get -y update
 RUN apt-get -y install \
@@ -29,14 +32,11 @@ RUN bundle config --global jobs 8
 
 # Add app code and set file permissions
 WORKDIR /
-ADD . /opt/nahiluhmot/tabular-backend
 RUN useradd --create-home --user-group tabular
+ADD . /opt/nahiluhmot/tabular-backend
 RUN chown -R tabular:tabular /opt/nahiluhmot/tabular-backend/
 
 # Install ruby dependencies
 WORKDIR /opt/nahiluhmot/tabular-backend/
 USER tabular
 RUN bundle install --deployment
-
-# Default startup command
-CMD bundle exec rake web
