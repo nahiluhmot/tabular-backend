@@ -1,2 +1,4 @@
 # This file initializes the web application.
-run Tabular::Controllers::Main
+map ('/api/') do
+  run Tabular::Controllers::Main
+end
