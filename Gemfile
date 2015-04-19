@@ -8,6 +8,7 @@ gem 'sinatra-activerecord'
 gem 'unicorn'
 gem 'mysql2'
 gem 'scrypt'
+gem 'formatador'
 
 group :development, :test do
   gem 'annotate'
