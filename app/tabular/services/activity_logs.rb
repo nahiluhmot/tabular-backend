@@ -26,7 +26,7 @@ module Tabular
           if results.empty? && !Models::Session.exists?(key: key)
             fail Errors::Unauthorized
           end
-        end
+        end.tap(&method(:preload_feed_activities))
       end
 
       def recent_activity_for!(username, options = {})
@@ -38,6 +38,11 @@ module Tabular
           .limit(limit)
           .offset(page.pred * limit)
           .tap { |logs| validate_recent_activity_results!(username, logs) }
+          .tap(&method(:preload_feed_activities))
+      end
+
+      def preload_feed_activities(feed)
+        ActiveRecord::Associations::Preloader.new.preload(feed, :activity)
       end
 
       def validate_feed_options!(options)
