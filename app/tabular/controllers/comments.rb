@@ -8,19 +8,18 @@ module Tabular
       end
 
       # Get the comments by a tab.
-      get '/tabs/:tab_id/comments/?' do |tab_id|
+      get '/comments/?' do
         status 200
 
-        comments_for_tab!(tab_id).map do |comment|
+        comments_for_tab!(params[:tab_id].to_i).map do |comment|
           present! comment, user: true
         end.to_json
       end
 
       # Post a new comment on a tab.
-      post '/tabs/:tab_id/comments/?' do |tab_id|
+      post '/comments/?' do
         status 201
-
-        comment = create_comment!(session_key, tab_id, request_body[:body])
+        comment = create_comment!(session_key, *request_body(:tab_id, :body))
         present_json! comment
       end
 

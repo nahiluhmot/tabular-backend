@@ -6,10 +6,10 @@ describe Tabular::Controllers::Comments do
   let(:response_body) { JSON.parse(subject.body) }
   let(:app) { described_class.new }
 
-  describe 'GET /tabs/:tab_id/comments/' do
+  describe 'GET /comments/' do
     context 'when the tab does not exist' do
       it 'returns a 404' do
-        get '/tabs/-1/comments/'
+        get '/comments/', tab_id: -1
 
         expect(status).to eq(404)
       end
@@ -36,7 +36,7 @@ describe Tabular::Controllers::Comments do
       before { comments.each(&:save!) }
 
       it 'returns a 200 with the comments in the body' do
-        get "/tabs/#{tab.id}/comments/"
+        get '/comments/', tab_id: tab.id
 
         expect(status).to eq(200)
         expect(response_body).to eq(expected_response)
@@ -44,9 +44,8 @@ describe Tabular::Controllers::Comments do
     end
   end
 
-  describe 'POST /tabs/:tab_id/comments/' do
-    let(:path) { "/tabs/#{tab_id}/comments/" }
-    let(:post_body) { { body: body }.to_json }
+  describe 'POST /comments/' do
+    let(:post_body) { { tab_id: tab_id, body: body }.to_json }
 
     let(:tab_id) { tab.id }
     let(:tab) { create(:tab) }
@@ -54,7 +53,7 @@ describe Tabular::Controllers::Comments do
 
     context 'when nobody is logged in' do
       it 'returns a 401' do
-        post path, post_body
+        post '/comments/', post_body
 
         expect(status).to eq(401)
       end
@@ -70,7 +69,7 @@ describe Tabular::Controllers::Comments do
         let(:tab_id) { -1 }
 
         it 'returns a 404' do
-          post path, post_body
+          post '/comments/', post_body
 
           expect(status).to eq(404)
         end
@@ -81,7 +80,7 @@ describe Tabular::Controllers::Comments do
           let(:body) { nil }
 
           it 'returns a 400' do
-            post path, post_body
+            post '/comments/', post_body
 
             expect(status).to eq(400)
           end
@@ -89,7 +88,7 @@ describe Tabular::Controllers::Comments do
 
         context 'and there is a comment body' do
           it 'creates a new comment and returns it' do
-            post path, post_body
+            post '/comments/', post_body
 
             expect(status).to eq(201)
             expect(response_body).to include('body' => body)
