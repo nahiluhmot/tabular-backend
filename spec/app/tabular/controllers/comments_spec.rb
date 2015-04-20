@@ -6,50 +6,6 @@ describe Tabular::Controllers::Comments do
   let(:response_body) { JSON.parse(subject.body) }
   let(:app) { described_class.new }
 
-  describe 'GET /user/:username/comments/' do
-    context 'when the username does not exist' do
-      it 'returns a 404' do
-        get '/users/bad_username/comments/'
-
-        expect(status).to eq(404)
-      end
-    end
-
-    context 'when the username exists' do
-      let(:user) { create(:user) }
-      let(:comment_one) { build(:comment, user: user) }
-      let(:comment_two) { build(:comment, user: user) }
-      let(:comments) { [comment_one, comment_two] }
-
-      let(:expected_response) do
-        comments.map do |comment|
-          {
-            'id' => comment.id,
-            'body' => comment.body,
-            'tab' => {
-              'id' => comment.tab.id,
-              'artist' => comment.tab.artist,
-              'album' => comment.tab.album,
-              'title' => comment.tab.title,
-              'user' => {
-                'username' => comment.tab.user.username
-              }
-            }
-          }
-        end
-      end
-
-      before { comments.each(&:save!) }
-
-      it 'returns a 200 with the comments in the body' do
-        get "/users/#{user.username}/comments/"
-
-        expect(status).to eq(200)
-        expect(response_body).to eq(expected_response)
-      end
-    end
-  end
-
   describe 'GET /tabs/:tab_id/comments/' do
     context 'when the tab does not exist' do
       it 'returns a 404' do

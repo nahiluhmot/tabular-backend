@@ -7,16 +7,6 @@ module Tabular
         include Services::Presenters
       end
 
-      # Get the comments by a username, with the original tab they were
-      # commented on.
-      get '/users/:username/comments/?' do |username|
-        status 200
-
-        comments_for_user!(username).map do |comment|
-          present! comment, tab: true
-        end.to_json
-      end
-
       # Get the comments by a tab.
       get '/tabs/:tab_id/comments/?' do |tab_id|
         status 200
