@@ -11,8 +11,16 @@ module Tabular
       # Create a new user and log them in.
       post '/users/?' do
         status 201
-        args = request_body(:username, :password, :password_confirmation)
-        present_json! create_user!(*args)
+        username, password, _ = args =
+          request_body(:username, :password, :password_confirmation)
+        user = create_user!(*args)
+        session = login!(username, password)
+
+        response.set_cookie :session_key,
+          value: session.key,
+          expires: 7.days.from_now
+
+        present_json! user
       end
 
       # Update a user, in this case only updating their password.

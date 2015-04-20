@@ -55,12 +55,17 @@ describe Tabular::Controllers::Users do
           end
 
           context 'and the username is not taken' do
-            let(:model) { Tabular::Models::User.find_by(username: username) }
+            let(:session_key) { rack_mock_session.cookie_jar['session_key'] }
             let(:expected_response) { { username: username } }
 
-            it 'returns a 201 and creates a user' do
+            it 'returns a 201, creates a user, and signs them in' do
               expect(last_response.status).to eq(201)
               expect(response_body).to eq(expected_response)
+
+              expect(Tabular::Models::Session.exists?(key: session_key))
+                .to be true
+              expect(Tabular::Models::User.exists?(username: username))
+                .to be true
             end
           end
         end
