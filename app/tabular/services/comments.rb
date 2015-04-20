@@ -10,12 +10,6 @@ module Tabular
         Models::Comment.where(tab_id: tab_id).to_a
       end
 
-      # Return the comments for the given user id.
-      def comments_for_user!(username)
-        user = Users.user_for_username!(username)
-        Models::Comment.where(user_id: user.id).to_a
-      end
-
       # Authenticate and comment on a tab.
       def create_comment!(session_key, tab_id, body)
         user = Users.user_for_session!(session_key)

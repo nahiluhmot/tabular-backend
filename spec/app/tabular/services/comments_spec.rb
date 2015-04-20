@@ -21,26 +21,6 @@ describe Tabular::Services::Comments do
     end
   end
 
-  describe '#comments_for_user!' do
-    context 'when the user does not exist' do
-      it 'fails with NoSuchModel' do
-        expect { subject.comments_for_user!('bad username') }
-          .to raise_error(Tabular::Errors::NoSuchModel)
-      end
-    end
-
-    context 'when the user exists' do
-      let(:comment) { build(:comment, user: user) }
-      let(:user) { create(:user) }
-
-      before { comment.save! }
-
-      it 'returns the comments for that user' do
-        expect(subject.comments_for_user!(user.username)).to eq([comment])
-      end
-    end
-  end
-
   describe '#create_comment!' do
     let(:key) { session.key }
     let(:tab_id) { tab.id }
