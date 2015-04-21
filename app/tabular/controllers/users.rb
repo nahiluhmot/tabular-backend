@@ -8,6 +8,13 @@ module Tabular
         include Services::Users
       end
 
+      # Get the signed in user.
+      get '/users/?' do
+        status 200
+
+        present_json! user_for_session!(session_key)
+      end
+
       # Create a new user and log them in.
       post '/users/?' do
         status 201

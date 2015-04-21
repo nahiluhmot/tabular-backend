@@ -3,6 +3,30 @@ require 'spec_helper'
 describe Tabular::Controllers::Users do
   let(:app) { described_class.new }
 
+  describe 'GET /users/' do
+    context 'when there is nobody logged in' do
+      it 'returns a 401' do
+        get '/users/'
+
+        expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when a user is logged in' do
+      let(:user) { create(:user) }
+      let(:session) { create(:session, user: user) }
+
+      before { header Tabular::Controllers::SESSION_KEY_HEADER, session.key }
+
+      it 'returns their username' do
+        get '/users/'
+
+        expect(last_response.status).to eq(200)
+        expect(JSON.parse(last_response.body)['username']).to eq(user.username)
+      end
+    end
+  end
+
   describe 'POST /users/' do
     let(:post_body) { options.to_json }
     let(:options) do
