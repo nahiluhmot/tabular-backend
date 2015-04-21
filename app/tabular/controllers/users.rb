@@ -18,6 +18,7 @@ module Tabular
 
         response.set_cookie :session_key,
           value: session.key,
+          path: '/',
           expires: 7.days.from_now
 
         present_json! user
@@ -33,6 +34,7 @@ module Tabular
 
         response.set_cookie :session_key,
           value: session.key,
+          path: '/',
           expires: 7.days.from_now
       end
 
