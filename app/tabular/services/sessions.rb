@@ -23,7 +23,7 @@ module Tabular
       def unique_session_keys
         @unique_keys ||= Enumerator.new do |keys|
           loop do
-            key = Crypto.generate_salt
+            key = Crypto.generate_salt.gsub(/[^0-9a-z]+/, '')
             keys << key unless Models::Session.exists?(key: key)
           end
         end
