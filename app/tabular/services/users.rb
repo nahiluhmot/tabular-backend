@@ -9,7 +9,7 @@ module Tabular
       def create_user!(username, password, confirmation)
         fail Errors::Conflict if Models::User.exists?(username: username)
 
-        salt, hash = Crypto.validate_new_password!(password, confirmation)
+        salt, hash = Crypto.validate_new_password!(password || '', confirmation || '')
         Models::User.create!(
           username: username,
           password_salt: salt,
