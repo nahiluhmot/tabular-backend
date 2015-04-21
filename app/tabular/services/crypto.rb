@@ -27,6 +27,7 @@ module Tabular
       # the minimum length restriction. If it is valid, generate a new salt and
       # password.
       def validate_new_password!(password, password_confirmation)
+        password ||= ''
         fail Errors::PasswordsDoNotMatch if password != password_confirmation
         fail Errors::PasswordTooShort if password.length < MINIMUM_PASSWORD_SIZE
         salt = generate_salt
