@@ -3,6 +3,7 @@ module Tabular
     # This controller handles requests dealing with users.
     class Users < Base
       helpers do
+        include Services::Logger
         include Services::Presenters
         include Services::Sessions
         include Services::Users
@@ -11,7 +12,7 @@ module Tabular
       # Get the signed in user.
       get '/users/?' do
         status 200
-
+        debug "Getting logged user for session key: #{session_key}"
         present_json! user_for_session!(session_key)
       end
 
