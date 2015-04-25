@@ -27,6 +27,28 @@ describe Tabular::Controllers::Users do
     end
   end
 
+  describe 'GET /users/:username/' do
+    before { get "/users/#{username}/" }
+
+    context 'when the user does not exist' do
+      let(:username) { 'test_username' }
+
+      it 'returns a 404' do
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'when the user exists' do
+      let(:username) { user.username }
+      let(:user) { create(:user) }
+
+      it 'returns a 200 and the username' do
+        expect(last_response.status).to eq(200)
+        expect(JSON.parse(last_response.body)['username']).to eq(user.username)
+      end
+    end
+  end
+
   describe 'POST /users/' do
     let(:post_body) { options.to_json }
     let(:options) do

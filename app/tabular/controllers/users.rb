@@ -16,6 +16,12 @@ module Tabular
         present_json! user_for_session!(session_key)
       end
 
+      # Get the user by their username.
+      get '/users/:username/?' do |username|
+        status 200
+        present_json! user_for_username!(username)
+      end
+
       # Create a new user and log them in.
       post '/users/?' do
         status 201
