@@ -15,14 +15,27 @@ describe Tabular::Controllers::Users do
     context 'when a user is logged in' do
       let(:user) { create(:user) }
       let(:session) { create(:session, user: user) }
+      let(:body) { JSON.parse(last_response.body) }
+      let(:expected) do
+        {
+          'username' => user.username,
+          'followers_count' => user.followers_count,
+          'followees_count' => user.followees_count
+        }
+      end
 
-      before { header Tabular::Controllers::SESSION_KEY_HEADER, session.key }
+      before do
+        header Tabular::Controllers::SESSION_KEY_HEADER, session.key
+        3.times { create(:relationship, follower: user) }
+        2.times { create(:relationship, followee: user) }
+        user.reload
+      end
 
       it 'returns their username' do
         get '/users/'
 
         expect(last_response.status).to eq(200)
-        expect(JSON.parse(last_response.body)['username']).to eq(user.username)
+        expect(body).to eq(expected)
       end
     end
   end
@@ -41,10 +54,18 @@ describe Tabular::Controllers::Users do
     context 'when the user exists' do
       let(:username) { user.username }
       let(:user) { create(:user) }
+      let(:body) { JSON.parse(last_response.body) }
+      let(:expected) do
+        {
+          'username' => user.username,
+          'followers_count' => user.followers_count,
+          'followees_count' => user.followees_count
+        }
+      end
 
       it 'returns a 200 and the username' do
         expect(last_response.status).to eq(200)
-        expect(JSON.parse(last_response.body)['username']).to eq(user.username)
+        expect(body).to eq(expected)
       end
     end
   end

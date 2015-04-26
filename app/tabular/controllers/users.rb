@@ -13,13 +13,13 @@ module Tabular
       get '/users/?' do
         status 200
         debug "Getting logged user for session key: #{session_key}"
-        present_json! user_for_session!(session_key)
+        present_json! user_for_session!(session_key), counts: true
       end
 
       # Get the user by their username.
       get '/users/:username/?' do |username|
         status 200
-        present_json! user_for_username!(username)
+        present_json! user_for_username!(username), counts: true
       end
 
       # Create a new user and log them in.
