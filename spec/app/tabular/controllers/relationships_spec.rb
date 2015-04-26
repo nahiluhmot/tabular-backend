@@ -74,6 +74,58 @@ describe Tabular::Controllers::Relationships do
     end
   end
 
+  describe 'GET /users/:username/is-following/' do
+    let(:username) { followee.username }
+    let(:key) { session.key }
+    let(:follower) { create(:user) }
+    let(:followee) { create(:user) }
+    let(:session) { create(:session, user: follower) }
+
+    context 'when the user is not logged in' do
+      it 'returns a 401' do
+        get "/users/#{username}/is-following/"
+
+        expect(subject.status).to eq(401)
+      end
+    end
+
+    context 'when the user is logged in' do
+      before { header Tabular::Controllers::SESSION_KEY_HEADER, key }
+
+      context 'but the username does not exist' do
+        let(:username) { 'bad_username' }
+
+        it 'returns a 404' do
+          get "/users/#{username}/is-following/"
+
+          expect(subject.status).to eq(404)
+        end
+      end
+
+      context 'and the username exists' do
+        context 'and the follower already follows the followee' do
+          before { Tabular::Services::Relationships.follow!(key, username) }
+
+          it 'returns a 200' do
+            get "/users/#{username}/is-following/"
+
+            expect(subject.status).to eq(200)
+            expect(JSON.parse(subject.body)).to eq('following' => true)
+          end
+        end
+
+        context 'and the follower does not yet follow the followee' do
+          it 'returns a 200' do
+            get "/users/#{username}/is-following/"
+
+            expect(subject.status).to eq(200)
+            expect(JSON.parse(subject.body)).to eq('following' => false)
+          end
+        end
+      end
+    end
+  end
+
   describe 'POST /users/:username/followers' do
     let(:username) { followee.username }
     let(:key) { session.key }

@@ -22,6 +22,13 @@ module Tabular
         followees!(username).map(&method(:present!)).to_json
       end
 
+      # Test if the logged in user follows the given username.
+      get '/users/:username/is-following/?' do |username|
+        status 200
+
+        { following: follows?(session_key, username) }.to_json
+      end
+
       # Follow a user.
       post '/users/:username/followers/?' do |username|
         status 201
