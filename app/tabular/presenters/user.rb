@@ -6,8 +6,10 @@ module Tabular
         @user = user
       end
 
-      def present
-        @user.as_json(only: :username)
+      def present(opts = {})
+        options = { only: [:username] }
+        options[:only] += [:followees_count, :followers_count] if opts[:counts]
+        @user.as_json(options)
       end
     end
   end
