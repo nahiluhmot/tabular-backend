@@ -71,6 +71,51 @@ describe Tabular::Services::Relationships do
     end
   end
 
+  describe '#follows?' do
+    let(:session_key) { session.key }
+    let(:username) { followee.username }
+
+    let(:followee) { create(:user) }
+    let(:follower) { create(:user) }
+    let(:session) { create(:session, user: follower) }
+
+    context 'when the session_key is invalild' do
+      let(:session_key) { 'boo bad key' }
+
+      it 'fails with Unauthorized' do
+        expect { subject.follows?(session_key, username) }
+          .to raise_error(Tabular::Errors::Unauthorized)
+      end
+    end
+
+    context 'when the session_key is valid' do
+      context 'but the username does not exist' do
+        let(:username) { 'boo bad username' }
+
+        it 'fails with NoSuchModel' do
+          expect { subject.follows?(session_key, username) }
+            .to raise_error(Tabular::Errors::NoSuchModel)
+        end
+      end
+
+      context 'and the username exists' do
+        context 'and the authenticated user is already following them' do
+          before { subject.follow!(session_key, username) }
+
+          it 'returns true' do
+            expect(subject.follows?(session_key, username)).to be true
+          end
+        end
+
+        context 'and the authenticated user is not yet following them' do
+          it 'returns false' do
+            expect(subject.follows?(session_key, username)).to be false
+          end
+        end
+      end
+    end
+  end
+
   describe '#follow!' do
     let(:session_key) { session.key }
     let(:username) { followee.username }

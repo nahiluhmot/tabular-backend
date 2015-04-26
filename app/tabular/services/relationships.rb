@@ -14,6 +14,17 @@ module Tabular
         Users.user_for_username!(username).followees
       end
 
+      # Test if the user for the given session key follows that username.
+      def follows?(session_key, username)
+        follower = Users.user_for_session!(session_key)
+        followee = Users.user_for_username!(username)
+
+        Models::Relationship.exists?(
+          follower_id: follower.id,
+          followee_id: followee.id
+        )
+      end
+
       # Follow a user by their username.
       def follow!(session_key, username)
         follower = Users.user_for_session!(session_key)
