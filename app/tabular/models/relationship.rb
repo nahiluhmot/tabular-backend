@@ -16,10 +16,12 @@ module Tabular
       self.table_name = 'relationships'
 
       belongs_to :followee,
-        class_name: User.name
+        class_name: User.name,
+        counter_cache: :followers_count
 
       belongs_to :follower,
-        class_name: User.name
+        class_name: User.name,
+        counter_cache: :followees_count
 
       validates :followee_id,
         presence: true

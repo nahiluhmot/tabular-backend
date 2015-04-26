@@ -189,7 +189,7 @@ describe Tabular::Models::User do
   describe 'following associations' do
     subject { create(:user) }
 
-    let(:followees) { [create(:user), create(:user)] }
+    let(:followees) { [create(:user), create(:user), create(:user)] }
     let(:followers) { [create(:user), create(:user)] }
 
     before do
@@ -205,17 +205,27 @@ describe Tabular::Models::User do
     describe '#followees' do
       it 'returns users that the subject is following' do
         expect(subject.followees).to eq(followees)
+        expect(subject.followees_count).to eq(followees.count)
       end
     end
 
     describe '#followers' do
       it 'returns users that the subject is following' do
         expect(subject.followers).to eq(followers)
+        expect(subject.followers_count).to eq(followers.count)
       end
     end
 
     context 'when the user is destroyed' do
       before { subject.destroy! }
+
+      it 'does destroy all of the relationships' do
+        expect(Tabular::Models::Relationship.exists?(follower_id: subject.id))
+          .to be false
+
+        expect(Tabular::Models::Relationship.exists?(followee_id: subject.id))
+          .to be false
+      end
 
       it 'does not destroy the other users' do
         expect(followers + followees).to be_all do |user|
