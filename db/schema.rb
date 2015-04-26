@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415202549) do
+ActiveRecord::Schema.define(version: 20150426123540) do
 
   create_table "activity_logs", force: :cascade do |t|
     t.integer  "user_id",       limit: 4,   null: false
@@ -69,11 +69,13 @@ ActiveRecord::Schema.define(version: 20150415202549) do
   add_index "tabs", ["user_id"], name: "index_tabs_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",      limit: 255,   null: false
-    t.text     "password_hash", limit: 65535, null: false
-    t.string   "password_salt", limit: 255,   null: false
+    t.string   "username",        limit: 255,               null: false
+    t.text     "password_hash",   limit: 65535,             null: false
+    t.string   "password_salt",   limit: 255,               null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "followers_count", limit: 4,     default: 0, null: false
+    t.integer  "followees_count", limit: 4,     default: 0, null: false
   end
 
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
