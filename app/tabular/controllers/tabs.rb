@@ -27,7 +27,7 @@ module Tabular
       end
 
       # Retrieve a tab by its id.
-      get '/tabs/:id/' do |id|
+      get '/tabs/:id/?' do |id|
         status 200
         present_json! find_tab_by_id!(id), user: true, comments: true
       end
